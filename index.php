@@ -1,6 +1,5 @@
 <?php
-
-    include 'includes/autoloader.inc.php';
+include 'includes/autoloader.inc.php';
 ?>
 
 <!DOCTYPE html>
@@ -29,6 +28,10 @@
         </select>
     <p></p>
 
+
+    <!-- Necessary components for a bike to ride, including at least 2 wheels -->
+
+
     <input type="checkbox" id="frame" name="bikeFrame" value=true>
     <label for="frame"> Add a frame</label><br>
     <input type="checkbox" id="handlebars" name="bikeHandlebars" value=true>
@@ -47,39 +50,63 @@
         <option value=4>4</option>
         </select>
     <p></p>
-<input type="submit" value="Create Bike" name="submit"> </form>
 
+
+    <!-- Pedal speed and gear number determine speed -->
+
+
+    <label for="pedalSpeed">Pedal Speed?</label>
+        <select id="pedalSpeed" name="pedalSpeed">
+        <option value="slow">Slow</option>
+        <option value="medium">Medium</option>
+        <option value="fast">Fast</option>
+        </select>
+    <p></p>
+
+
+    <label for="gearNumber">Gear Number?</label>
+        <select id="gearNumber" name="gearNumber">
+        <option value=0>0</option>
+        <option value=1>1</option>
+        <option value=3>3</option>
+        <option value=21>21</option>
+        </select>
+    <p></p>
+
+<input type="submit" value="Create and Ride" name="submit"> </form>
 
 <p></p>
 
 
 
+
     <?php
 
-        function createBike($bikeColor, $bikeSize, $bikeFrame, $bikeHandlebars, $bikeCrank, $bikeSeat, $bikeWheels){
-            $newBike = new Bicycle($bikeColor, $bikeSize, $bikeFrame, $bikeHandlebars, $bikeCrank, $bikeSeat, $bikeWheels);
+// Instantiates the bike object
 
-            if(isset($_POST['button1'])) {
-                $newBike->rideBike("slow");
-            }
-            if(isset($_POST['button2'])) {
-                echo "This is Button2 that is selected";
-            }
-        }
+function createBike($bikeColor, $bikeSize, $bikeFrame,
+    $bikeHandlebars, $bikeCrank, $bikeSeat, $bikeWheels, $pedalSpeed, $gearNumber) {
+    $newBike = new Bicycle($bikeColor, $bikeSize, $bikeFrame,
+        $bikeHandlebars, $bikeCrank, $bikeSeat, $bikeWheels);
 
-        if(isset($_GET['submit']))
-            {
-            createBike(
-            $_GET["bikeColor"] ?? $bikeColor = "grey",
-            $_GET["bikeSize"] ?? $bikeSize = "medium", 
-            $_GET["bikeFrame"] ?? $bikeFrame = "false", 
-            $_GET["bikeHandlebars"] ?? $bikeHandlebars = "false", 
-            $_GET["bikeCrank"] ?? $bikeCrank = "false", 
-            $_GET["bikeSeat"] ?? $bikeSeat = "false", 
-            $_GET["bikeWheels"] ?? $bikeWheels = 2);
-            }
+    $newBike->rideBike($pedalSpeed, $gearNumber);
+}
 
-            
-    ?>
+// Sets form values and defaults to avoid errors
+
+if (isset($_GET['submit'])) {
+    createBike(
+        $_GET["bikeColor"] ?? $bikeColor = "grey",
+        $_GET["bikeSize"] ?? $bikeSize = "medium",
+        $_GET["bikeFrame"] ?? $bikeFrame = "false",
+        $_GET["bikeHandlebars"] ?? $bikeHandlebars = "false",
+        $_GET["bikeCrank"] ?? $bikeCrank = "false",
+        $_GET["bikeSeat"] ?? $bikeSeat = "false",
+        $_GET["bikeWheels"] ?? $bikeWheels = 2,
+        $_GET["pedalSpeed"] ?? $pedalSpeed = "slow",
+        $_GET["gearNumber"] ?? $gearNumber = 0);
+}
+
+?>
 </body>
 </html>
